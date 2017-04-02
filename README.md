@@ -29,8 +29,11 @@ Minimum capacity from the path found in the residual graph (**how much flow is a
       - `graphMatrix[1][1]` is `0` since the vertex in position 1 (**vertex "2"**) has no edges to itself, etc.
     - Row `vertexCount-1` is always all `0`'s since **T** (the sink) has **NO** outgoing edges `{0, 0, 0, 0, 0, 0, 0, 0}`
 
+### Final Flow Network
 ![](images/possible-min-cut.png)
+### Final Residual Graph
 ![](images/final-residual-graph.png)
+## Max Flow = 28
 
 ## Code Details
 - Constructor takes in an array of strings to have human readable vertices instead of `int`s
