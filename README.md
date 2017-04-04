@@ -48,5 +48,5 @@ Minimum capacity from the path found in the residual graph (**how much flow is a
 Capacity scaling
 1. Find capacity of S (sum all outgoing edges)
 2. delta = Math.floor(log_2(capacity) ) (log base 2)
-3. modify BFS to check bottlecks > delta
-4. otherwise reduce by hald
+3. BFS unchanged, after find bottleck, if bottleneck<delta `continue` & skip current loop
+4. cut delta in half @ end of `while`
