@@ -42,4 +42,4 @@ Minimum capacity from the path found in the residual graph (**how much flow is a
 - Uses Breadth First Search `bfs()` to find augmentation paths
   - Returns `true`/`false` if a path from **S** to **T** was found
   - Updates `parent[]` array so the actual path can be found
-- `maxFlow()` outputs each augmentation path found & the amount of flow added to total flow (`bottleck`)
+- `maxFlow()` outputs each augmentation path found & the amount of flow added to total flow (`bottleneck`)
