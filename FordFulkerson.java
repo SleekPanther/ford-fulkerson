@@ -51,68 +51,6 @@ public class FordFulkerson {
 		return maxFlow;
 	}
 
-	// Returns max flow from S to T in a graph
-	public int maxFlowCapacityScaling(int graph[][], int vertexS, int vertexT) {
-		//Find sum of forward edges leaving S
-		int maxCapacityFromS = 0;
-		for(int i=0; i<graph[vertexS].length; i++){
-			maxCapacityFromS += graph[vertexS][i];
-		}
-		System.out.println(maxCapacityFromS);
-
-		// Find the largest power of 2 <= maxCapacityFromS
-		int deltaExponent = (int) (Math.log(maxCapacityFromS) / Math.log(2) );	//floor(log_2(maxCapacityFromS))	log_2=log base 2
-		int deltaScalingParameter = (int) Math.pow(2, deltaExponent);
-
-
-		int maxFlow = 0;
-		int parent[] = new int[vertexCount];	//holds parent of a vertex when a path if found (filled by BFS)
-		int vertexU=0;	//iterator vertices to loop over the matrix
-		int vertexV =0;
-
-		int residualGraph[][] = new int[vertexCount][vertexCount];	//residualGraph[i][j] tells you if there's an edge between vertex i & j. 0=no edge, positive number=capacity of that edge
-		for (vertexU = 0; vertexU < vertexCount; vertexU++){		//copy over every edge from the original graph into residual
-			for (vertexV = 0; vertexV < vertexCount; vertexV++){
-				residualGraph[vertexU][vertexV] = graph[vertexU][vertexV];
-			}
-		}
-
-		while (bfs(residualGraph, vertexS, vertexT, parent)) {		//if a path exists from S to T
-			String pathString = "";		//Shows the augmented path taken
-
-			//find bottleneck by looping over path from BFS using parent[] array
-			int bottleneckFlow = Integer.MAX_VALUE;		//we want the bottleneck (minimum), so initially set it to the largest number possible. Loop updates value if it's smaller
-			for (vertexV=vertexT; vertexV != vertexS; vertexV=parent[vertexV]) {		//loop backward through the path using parent[] array
-				vertexU = parent[vertexV];		//get the previous vertex in the path
-				bottleneckFlow = Math.min(bottleneckFlow, residualGraph[vertexU][vertexV]);		//minimum of previous bottleneck & the capacity of the new edge
-
-				pathString = " --> "+arrayIndexStringEquivalents[vertexV]+ pathString;	//prepend vertex to path
-			}
-			pathString= "S"+pathString;		//loop stops before it gets to S, so add S to the beginning
-
-			//only choose this path if bottleneck is big enough, otherwise maxFlow is unchanged & delta is cut in half
-			if(bottleneckFlow < deltaScalingParameter){
-				deltaScalingParameter /= 2;		//divide by 2 since no bottleck big enough was found
-				System.out.println("bottleck too small"+bottleneckFlow +" < "+ deltaScalingParameter);
-				continue;
-			}
-
-			System.out.println("Augmentation path \n"+pathString);
-			System.out.println("bottleneck (min flow on path added to max flow) = "+bottleneckFlow +"\n");
-
-			//Update residual graph capacities & reverse edges along the path
-			for (vertexV=vertexT; vertexV != vertexS; vertexV=parent[vertexV]) {	//loop backwards over path (same loop as above)
-				vertexU = parent[vertexV];
-				residualGraph[vertexU][vertexV] -= bottleneckFlow;		//back edge
-				residualGraph[vertexV][vertexU] += bottleneckFlow;		//forward edge
-			}
-
-			maxFlow += bottleneckFlow;		//add the smallest flow found in the augmentation path to the overall flow
-		}
-
-		return maxFlow;
-	}
-
 	//Returns true if it finds a path from S to T
 	//saves the vertices in the path in parent[] array
 	public boolean bfs(int residualGraph[][], int vertexS, int vertexT, int parent[]) {
@@ -169,9 +107,7 @@ public class FordFulkerson {
 
 		int vertexS = 0;
 		int vertexT = vertexCount-1;	//T is the last thing in the list
-		// System.out.println("\nBasic Ford Fulkerson Max Flow: " + maxFlowFinder.maxFlow(graphMatrix, vertexS, vertexT));
-
-		System.out.println("\nCapacity Scaling Max Flow: " + maxFlowFinder.maxFlowCapacityScaling(graphMatrix, vertexS, vertexT));
+		System.out.println("\nBasic Ford Fulkerson Max Flow: " + maxFlowFinder.maxFlow(graphMatrix, vertexS, vertexT));
 	}
 
 }
