@@ -43,3 +43,10 @@ Minimum capacity from the path found in the residual graph (**how much flow is a
   - Returns `true`/`false` if a path from **S** to **T** was found
   - Updates `parent[]` array so the actual path can be found
 - `maxFlow()` outputs each augmentation path found & the amount of flow added to total flow (`bottleneck`)
+
+### Improvements
+Capacity scaling
+1. Find capacity of S (sum all outgoing edges)
+2. delta = Math.floor(log_2(capacity) ) (log base 2)
+3. BFS unchanged, after find bottleck, if bottleneck<delta `continue` & skip current loop
+4. cut delta in half @ end of `while`
